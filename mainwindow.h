@@ -15,15 +15,42 @@ class MainWindow : public QMainWindow
         void newFile();
         void open();
         void save();
+        void copy();
+        void paste();
+        void cut();
+        void undo();
+        void redo();
+        void about();
+        void pen();
+        void rec();
+        void paint();
+        void ecl();
 
 	private:
 		void createMenus();
         void createActions();
+        void createTools();
+
 		QMenu* fileMenu;
 		QMenu* editMenu;
 		QMenu* helpMenu;
 		QAction* newAct;
 		QAction* openAct;
 		QAction* saveAct;
+        QAction* copyAct;
+        QAction* pasteAct;
+        QAction* cutAct;
+        QAction* redoAct;
+        QAction* undoAct;
+        QAction* aboutAct;
+
+        QToolBar* tools;
+        QActionGroup* toolGroup;
+        QAction* penAct;
+        QAction* paintAct;
+        QAction* recAct;
+        QAction* eclAct;
+
+
 };
 #endif
