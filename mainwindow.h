@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+
+class PaintArea;
 class QAction;
 class QActionGroup;
 class QLabel;
@@ -30,6 +32,8 @@ class MainWindow : public QMainWindow
 		void createMenus();
         void createActions();
         void createTools();
+
+        PaintArea* paintArea;
 
 		QMenu* fileMenu;
 		QMenu* editMenu;

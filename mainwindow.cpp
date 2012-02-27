@@ -1,21 +1,26 @@
 #include<QtGui>
 
 #include"mainwindow.h"
+#include"paintarea.h"
 MainWindow::MainWindow()
 {
-    QWidget* widget = new QWidget;
-	setCentralWidget(widget);
+    //QWidget* widget = new QWidget;
+    paintArea=new PaintArea;
+    setCentralWidget(paintArea);
 
-	QWidget* top=new QWidget;
-	top->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-	QWidget* bottom=new QWidget;
-	bottom->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    //QWidget* top=new QWidget;
+    //top->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    //QWidget* bottom=new QWidget;
+    //bottom->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
+    /*
 	QVBoxLayout* layout=new QVBoxLayout;
 	layout->setMargin(5);
     layout->addWidget(top);
+    layout->addWidget(paintArea);
 	layout->addWidget(bottom);
-	widget->setLayout(layout);
-
+    widget->setLayout(layout);
+    */
     createActions();
 	createMenus();
 
@@ -24,7 +29,7 @@ MainWindow::MainWindow()
     setWindowTitle("MENU");
     statusBar();
 
-	resize(480,320);
+    resize(1000,600);
 }
 void MainWindow::createTools(){
 
@@ -151,14 +156,14 @@ void MainWindow::about(){
 
 }
 void MainWindow::pen(){
-
+    paintArea->setState(0);
 }
 void MainWindow::rec(){
-
+    paintArea->setState(3);
 }
 void MainWindow::paint(){
-
+    paintArea->setState(2);
 }
 void MainWindow::ecl(){
-
+    paintArea->setState(4);
 }

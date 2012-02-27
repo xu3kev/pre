@@ -8,5 +8,6 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += mainwindow.h
+HEADERS += mainwindow.h \
+    paintarea.h
 SOURCES += main.cpp mainwindow.cpp
