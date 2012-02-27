@@ -165,5 +165,5 @@ void MainWindow::paint(){
     paintArea->setState(2);
 }
 void MainWindow::ecl(){
-    paintArea->setState(4);
+    paintArea->setState(5);
 }
