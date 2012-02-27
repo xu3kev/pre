@@ -54,7 +54,6 @@ public:
             draw(event->x(),event->y());
             px=event->x();
             py=event->y();
-
         }
         if(state==4||state==6){
             update();
@@ -90,12 +89,10 @@ private:
     }
 
     void rec(int x,int y,int xx,int yy){
-        //QPainter painter(this);
         painter->drawRect(x,y,xx-x,yy-y);
         update();
     }
     void ecl(int x,int y,int xx,int yy){
-        //QPainter painter(this);
         painter->drawEllipse(x,y,xx-x,yy-y);
         update();
     }
