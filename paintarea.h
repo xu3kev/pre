@@ -15,7 +15,7 @@ using namespace std;
 class PaintArea: public QWidget
 {
 public:
-    PaintArea(QObject* parent=0):width(800),height(500)
+    PaintArea(QObject* parent=0):width(800),height(500),copy(0)
     {
         state=0;
         tmpPaint=0;
@@ -39,6 +39,18 @@ public:
         else if(state==6){
             painter2.drawEllipse(px,py,px2-px,py2-py);
         }
+        else if(state==8){
+            QPainter painter3(this);
+            painter3.drawRect(px,py,px2-px,py2-py);
+        }
+        else if(state==7&&copy){
+            QPainter painter3(this);
+            painter3.drawImage(cpx,cpy,*copy);
+        }
+        else if(state==9){
+            QPainter painter3(this);
+            painter3.drawImage(QPoint(cpx+px2-px,cpy+py2-py),*copy);
+        }
 
     }
     void mousePressEvent(QMouseEvent* event){
@@ -58,6 +70,29 @@ public:
         else if(state==3||state==5){
             ++state;
         }
+        else if(state==7){
+            if(copy){
+                if(copy->valid(px-cpx,py-cpy)){
+                    state+=2;
+                }
+                else{
+                    painter->drawImage(cpx,cpy,*copy);
+                    cpx=px;
+                    cpy=py;
+                    ++state;
+                    delete copy;
+                    copy=0;
+
+                }
+            }
+            else{
+                cpx=px;
+                cpy=py;
+                ++state;
+            }
+
+
+        }
 
     }
     void mouseMoveEvent(QMouseEvent* event){
@@ -68,9 +103,10 @@ public:
             px=event->x();
             py=event->y();
         }
-        if(state==4||state==6){
+        else if(state==4||state==6||state==8||state==9){
             update();
         }
+
     }
     void mouseReleaseEvent(QMouseEvent* event){
         if(state==1){
@@ -84,11 +120,23 @@ public:
             ecl(px,py,event->x(),event->y());
             --state;
         }
+        else if(state==8){
+            copy=new QImage(image->copy(px,py,px2-px,py2-py));
+            painter->fillRect(px,py,px2-px,py2-py,QColor(255,255,255));
+            --state;
+        }
+        else if(state==9){
+            cpx+=px2-px;
+            cpy+=py2-py;
+            state=7;
+        }
+
     }
     QPainter* getPainter(){return painter;}
 private:
     QImage* image;
     QPainter* painter;
+    QImage* copy;
     int state;
     int px;
     int py;
@@ -97,7 +145,10 @@ private:
     int py2;
     int width;
     int height;
-
+    int cpx;
+    int cpy;
+    int cpx2;
+    int cpy2;
 
     void draw(int x,int y){
         painter->drawLine(x,y,px,py);
@@ -187,6 +238,7 @@ public:
     }
     QColor color;
     QPainter* painter;
+
 };
 
 /*

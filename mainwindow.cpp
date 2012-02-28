@@ -58,12 +58,19 @@ void MainWindow::createTools(){
     eclAct->setCheckable(true);
     connect(eclAct,SIGNAL(triggered()),this,SLOT(ecl()));
 
+    chooseAct=new QAction("choose",this);
+    chooseAct->setCheckable(true);
+    connect(chooseAct,SIGNAL(triggered()),this,SLOT(choose()));
+
+
     addToolBar(Qt::LeftToolBarArea,tools);
     toolGroup->addAction(penAct);
     toolGroup->addAction(paintAct);
     toolGroup->addAction(recAct);
     toolGroup->addAction(eclAct);
+    toolGroup->addAction(chooseAct);
     tools->addActions(toolGroup->actions());
+
 
 }
 
@@ -178,4 +185,7 @@ void MainWindow::paint(){
 }
 void MainWindow::ecl(){
     paintArea->setState(5);
+}
+void MainWindow::choose(){
+    paintArea->setState(7);
 }
