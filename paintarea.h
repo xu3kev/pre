@@ -12,6 +12,13 @@
 #include<iostream>
 
 using namespace std;
+void swap(int& x,int& y){
+    int temp=x;
+    x=y;
+    y=temp;
+}
+
+
 class PaintArea: public QWidget
 {
 public:
@@ -25,6 +32,11 @@ public:
 
     }
     void setState(int s){
+        if(state==7&&copy){
+            painter->drawImage(cpx,cpy,*copy);
+            delete copy;
+            copy=0;
+        }
         state=s;
     }
 
@@ -121,7 +133,17 @@ public:
             --state;
         }
         else if(state==8){
-            copy=new QImage(image->copy(px,py,px2-px,py2-py));
+            if(px>px2){
+              cpx=px2;
+              swap(px,px2);
+            }
+            if(py>py2){
+              cpy=py2;
+              swap(py,py2);
+            }
+
+            copy=new QImage(image->copy(px,py,px2-px+1,py2-py+1) );
+            //cerr<<"??";
             painter->fillRect(px,py,px2-px,py2-py,QColor(255,255,255));
             --state;
         }
