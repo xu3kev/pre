@@ -5,9 +5,12 @@
 #include<QImage>
 #include<QPainter>
 #include<QPushButton>
+#include<QColor>
+#include<QToolBar>
 
 #include<vector>
 #include<iostream>
+
 using namespace std;
 class PaintArea: public QWidget
 {
@@ -26,14 +29,15 @@ public:
     }
 
     void paintEvent(QPaintEvent*){
-        QPainter painter(this);
-        painter.drawImage(0,0,*image);
+        QPainter painter2(this);
+        painter2.setPen(painter->pen());
+        painter2.drawImage(0,0,*image);
 
         if(state==4){
-            painter.drawRect(px,py,px2-px,py2-py);
+            painter2.drawRect(px,py,px2-px,py2-py);
         }
         else if(state==6){
-            painter.drawEllipse(px,py,px2-px,py2-py);
+            painter2.drawEllipse(px,py,px2-px,py2-py);
         }
 
     }
@@ -81,7 +85,7 @@ public:
             --state;
         }
     }
-
+    QPainter* getPainter(){return painter;}
 private:
     QImage* image;
     QPainter* painter;
@@ -93,6 +97,7 @@ private:
     int py2;
     int width;
     int height;
+
 
     void draw(int x,int y){
         painter->drawLine(x,y,px,py);
@@ -148,10 +153,52 @@ private:
 
         cout<<xs.size()<<" "<<ys.size()<<endl;
 
-
-
     }
 };
+class ColorPick:public QToolBar{
+public:
+    ColorPick(QPainter* ptr):color(0,0,0),painter(ptr){
+
+    }
+
+    void paintEvent(QPaintEvent *event){
+
+        QPainter painter(this);
+
+        painter.fillRect(0,0,40,40,color);
+
+        for(int i=0;i<8;++i){
+            painter.fillRect(0,50+i*30,30,30,QColor(255*(i&1),255*(i&2)>>1,255*(i&4)>>2))  ;
+        }
+    }
+    void mousePressEvent(QMouseEvent* event){
+        int px=event->x();
+        int py=event->y();
+        //cerr<<px;
+        if(px<0||px>30||py<50||py>290)
+            return;
+        py-=50;
+        py/=30;
+
+        color.setRgb(255*(py&1),255*(py&2)>>1,255*(py&4)>>2);
+        painter->setPen(color);
+        update();
+
+    }
+    QColor color;
+    QPainter* painter;
+};
+
+/*
+class ColorAction:public QAction{
+    ColorAction(QColor qcolor):QAction(),color(qcolor){
+
+    }
+
+    QColor color;
+};
+*/
+
 
 
 #endif // PAINTAREA_H

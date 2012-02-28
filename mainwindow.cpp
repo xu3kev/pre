@@ -8,24 +8,28 @@ MainWindow::MainWindow()
     paintArea=new PaintArea;
     setCentralWidget(paintArea);
 
-    //QWidget* top=new QWidget;
-    //top->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    //QWidget* bottom=new QWidget;
-    //bottom->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    QWidget* top=new QWidget;
+    top->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    QWidget* bottom=new QWidget;
+    bottom->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
-    /*
+
 	QVBoxLayout* layout=new QVBoxLayout;
-	layout->setMargin(5);
+//    QHBoxLayout* layout2=new QHBoxLayout;
+
+
+    layout->setMargin(5);
     layout->addWidget(top);
-    layout->addWidget(paintArea);
+    //layout->addWidget(paintArea);
+//    layout->addWidget(colorPick);
 	layout->addWidget(bottom);
-    widget->setLayout(layout);
-    */
+    //widget->setLayout(layout);
+    paintArea->setLayout(layout);
     createActions();
 	createMenus();
 
     createTools();
-
+    createColors();
     setWindowTitle("MENU");
     statusBar();
 
@@ -61,6 +65,14 @@ void MainWindow::createTools(){
     toolGroup->addAction(eclAct);
     tools->addActions(toolGroup->actions());
 
+}
+
+void MainWindow::createColors(){
+
+    colorPick=new ColorPick(paintArea->getPainter());
+    colorPick->addAction("red");
+
+    addToolBar(colorPick);
 }
 
 void MainWindow::createMenus()

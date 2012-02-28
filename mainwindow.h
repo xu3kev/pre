@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class ColorPick;
+class QColorDialog;
 class PaintArea;
 class QAction;
 class QActionGroup;
@@ -32,9 +34,14 @@ class MainWindow : public QMainWindow
 		void createMenus();
         void createActions();
         void createTools();
+        void createColors();
 
         PaintArea* paintArea;
 
+
+        //QColorDialog* colorPick;
+        //QToolBar* colorPick;
+        ColorPick* colorPick;
 		QMenu* fileMenu;
 		QMenu* editMenu;
 		QMenu* helpMenu;
