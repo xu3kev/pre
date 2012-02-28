@@ -30,7 +30,7 @@ class MainWindow : public QMainWindow
         void paint();
         void ecl();
         void choose();
-
+        void line();
 
 	private:
 		void createMenus();
@@ -64,6 +64,7 @@ class MainWindow : public QMainWindow
         QAction* recAct;
         QAction* eclAct;
         QAction* chooseAct;
+        QAction* lineAct;
 
 
 };

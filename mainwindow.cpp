@@ -58,9 +58,14 @@ void MainWindow::createTools(){
     eclAct->setCheckable(true);
     connect(eclAct,SIGNAL(triggered()),this,SLOT(ecl()));
 
+
     chooseAct=new QAction("choose",this);
     chooseAct->setCheckable(true);
     connect(chooseAct,SIGNAL(triggered()),this,SLOT(choose()));
+
+    lineAct=new QAction("line",this);
+    lineAct->setCheckable(true);
+    connect(lineAct,SIGNAL(triggered()),this,SLOT(line()));
 
 
     addToolBar(Qt::LeftToolBarArea,tools);
@@ -69,6 +74,7 @@ void MainWindow::createTools(){
     toolGroup->addAction(recAct);
     toolGroup->addAction(eclAct);
     toolGroup->addAction(chooseAct);
+    toolGroup->addAction(lineAct);
     tools->addActions(toolGroup->actions());
 
 
@@ -188,4 +194,7 @@ void MainWindow::ecl(){
 }
 void MainWindow::choose(){
     paintArea->setState(7);
+}
+void MainWindow::line(){
+    paintArea->setState(10);
 }
