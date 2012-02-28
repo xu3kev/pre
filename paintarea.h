@@ -5,13 +5,18 @@
 #include<QImage>
 #include<QPainter>
 #include<QPushButton>
+
+#include<vector>
+#include<iostream>
+using namespace std;
 class PaintArea: public QWidget
 {
 public:
-    PaintArea(QObject* parent=0){
+    PaintArea(QObject* parent=0):width(800),height(500)
+    {
         state=0;
         tmpPaint=0;
-        image=new QImage(800,500,QImage::Format_RGB32);
+        image=new QImage(width,height,QImage::Format_RGB32);
         image->fill(-1);
         painter=new QPainter(image);
 
@@ -41,6 +46,10 @@ public:
         if(state==0){
             draw(px,py);
             state=1;
+        }
+        else if(state==2){
+            paint(px,py);
+            update();
         }
         else if(state==3||state==5){
             ++state;
@@ -82,6 +91,8 @@ private:
     int tmpPaint;
     int px2;
     int py2;
+    int width;
+    int height;
 
     void draw(int x,int y){
         painter->drawLine(x,y,px,py);
@@ -96,7 +107,48 @@ private:
         painter->drawEllipse(x,y,xx-x,yy-y);
         update();
     }
-    void paint(){
+    void paint(int x,int y){
+        if(x<0||x>=width||y<0||y>=height)
+            return ;
+
+        unsigned pcol=image->pixel(x,y);
+        if(painter->pen().color().rgb()==pcol)
+            return;
+        vector<int> xs;
+        vector<int> ys;
+        int i=0;
+        int s=1;
+        xs.push_back(x);
+        ys.push_back(y);
+        painter->drawPoint(x,y);
+        while(i<xs.size()){
+            if(xs[i]>0 && image->pixel(xs[i]-1,ys[i])==pcol ){
+                xs.push_back(xs[i]-1);
+                ys.push_back(ys[i]);
+                painter->drawPoint(xs.back(),ys.back());
+            }
+            if(xs[i]<width-1 && image->pixel(xs[i]+1,ys[i])==pcol ){
+                xs.push_back(xs[i]+1);
+                ys.push_back(ys[i]);
+                painter->drawPoint(xs.back(),ys.back());
+            }
+            if(ys[i]>0 && image->pixel(xs[i],ys[i]-1)==pcol ){
+                xs.push_back(xs[i]);
+                ys.push_back(ys[i]-1);
+                painter->drawPoint(xs.back(),ys.back());
+            }
+            if(ys[i]<height-1 && image->pixel(xs[i],ys[i]+1)==pcol ){
+                xs.push_back(xs[i]);
+                ys.push_back(ys[i]+1);
+                painter->drawPoint(xs.back(),ys.back());
+            }
+            ++i;
+
+        }
+
+        cout<<xs.size()<<" "<<ys.size()<<endl;
+
+
 
     }
 };
