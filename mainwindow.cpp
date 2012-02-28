@@ -58,7 +58,7 @@ void MainWindow::createTools(){
     eclAct->setCheckable(true);
     connect(eclAct,SIGNAL(triggered()),this,SLOT(ecl()));
 
-    addToolBar(tools);
+    addToolBar(Qt::LeftToolBarArea,tools);
     toolGroup->addAction(penAct);
     toolGroup->addAction(paintAct);
     toolGroup->addAction(recAct);
@@ -70,9 +70,9 @@ void MainWindow::createTools(){
 void MainWindow::createColors(){
 
     colorPick=new ColorPick(paintArea->getPainter());
-    colorPick->addAction("red");
+    //colorPick->addAction("red");
 
-    addToolBar(colorPick);
+    addToolBar(Qt::LeftToolBarArea,colorPick);
 }
 
 void MainWindow::createMenus()
