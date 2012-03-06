@@ -52,6 +52,9 @@ public:
         image->load(name);
         painter=new QPainter(image);
         colorPick->setPainter(painter);
+        width=image->width();
+        height=image->height();
+        resize(width,height);
     }
     void saveImage(QString name){
 
@@ -194,6 +197,7 @@ private:
     QImage* image;
     QPainter* painter;
     QImage* copy;
+    QImage* copy2;
     ColorPick* colorPick;
     int state;
     int px;
