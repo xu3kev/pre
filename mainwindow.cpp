@@ -5,31 +5,38 @@
 MainWindow::MainWindow()
 {
     //QWidget* widget = new QWidget;
+
     paintArea=new PaintArea;
-    setCentralWidget(paintArea);
+    scrollArea=new QScrollArea;
+    scrollArea->setWidget(paintArea);
+    //scrollArea->setBackgroundRole(QPalette::Dark);
+    setCentralWidget(scrollArea);
+//    setCentralWidget(paintArea);
 
-    QWidget* top=new QWidget;
-    top->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-    QWidget* bottom=new QWidget;
-    bottom->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+ //   QWidget* top=new QWidget;
+ //   top->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+ //   QWidget* bottom=new QWidget;
+ //   bottom->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
 
-	QVBoxLayout* layout=new QVBoxLayout;
+//	QVBoxLayout* layout=new QVBoxLayout;
 //    QHBoxLayout* layout2=new QHBoxLayout;
 
 
-    layout->setMargin(5);
-    layout->addWidget(top);
+    //layout->setMargin(5);
+    //layout->addWidget(top);
     //layout->addWidget(paintArea);
 //    layout->addWidget(colorPick);
-	layout->addWidget(bottom);
+    //layout->addWidget(bottom);
     //widget->setLayout(layout);
-    paintArea->setLayout(layout);
+    //paintArea->setLayout(layout);
     createActions();
 	createMenus();
 
+
     createTools();
     createColors();
+    paintArea->setColorPick(colorPick);
     setWindowTitle("MENU");
     statusBar();
 
@@ -67,6 +74,10 @@ void MainWindow::createTools(){
     lineAct->setCheckable(true);
     connect(lineAct,SIGNAL(triggered()),this,SLOT(line()));
 
+    getColorAct=new QAction("getColor",this);
+    getColorAct->setCheckable(true);
+    connect(getColorAct,SIGNAL(triggered()),this,SLOT(getColor()));
+
 
     addToolBar(Qt::LeftToolBarArea,tools);
     toolGroup->addAction(penAct);
@@ -75,6 +86,7 @@ void MainWindow::createTools(){
     toolGroup->addAction(eclAct);
     toolGroup->addAction(chooseAct);
     toolGroup->addAction(lineAct);
+    toolGroup->addAction(getColorAct);
     tools->addActions(toolGroup->actions());
 
 
@@ -82,9 +94,9 @@ void MainWindow::createTools(){
 
 void MainWindow::createColors(){
 
-    colorPick=new ColorPick(paintArea->getPainter());
+    colorPick=new ColorPick(this,paintArea->getPainter());
     //colorPick->addAction("red");
-
+//    colorPick->setBackgroundRole(QPalette::Light);
     addToolBar(Qt::LeftToolBarArea,colorPick);
 }
 
@@ -140,6 +152,7 @@ void MainWindow::createActions()
     undoAct = new QAction("Undo",this);
     undoAct->setShortcut(QKeySequence::Undo);
     undoAct->setStatusTip("Undo");
+
     connect(undoAct,SIGNAL(triggered()),this,SLOT(undo()));
 
     redoAct = new QAction("Redo",this);
@@ -156,11 +169,19 @@ void MainWindow::newFile(){
 
 }
 void MainWindow::open(){
-
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open File"),QDir::currentPath());
+    if(!fileName.isEmpty()){
+        paintArea->setImage(fileName);
+    }
 }
 void MainWindow::save(){
+    QString fileName = QFileDialog::getSaveFileName(this,tr("Save File"),
+                                                    QDir::currentPath().append("/untitle.png"));
 
-
+    if(!fileName.isEmpty()){
+        cerr<<"!";
+        paintArea->saveImage(fileName);
+    }
 }
 void MainWindow::copy(){
 
@@ -197,4 +218,7 @@ void MainWindow::choose(){
 }
 void MainWindow::line(){
     paintArea->setState(10);
+}
+void MainWindow::getColor(){
+    paintArea->setState(12);
 }

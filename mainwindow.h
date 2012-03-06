@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <colorpick.h>
 
 class ColorPick;
 class QColorDialog;
@@ -10,6 +11,8 @@ class QAction;
 class QActionGroup;
 class QLabel;
 class QMenu;
+class QScrollArea;
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -31,6 +34,7 @@ class MainWindow : public QMainWindow
         void ecl();
         void choose();
         void line();
+        void getColor();
 
 	private:
 		void createMenus();
@@ -39,7 +43,7 @@ class MainWindow : public QMainWindow
         void createColors();
 
         PaintArea* paintArea;
-
+        QScrollArea* scrollArea;
 
         //QColorDialog* colorPick;
         //QToolBar* colorPick;
@@ -57,6 +61,7 @@ class MainWindow : public QMainWindow
         QAction* undoAct;
         QAction* aboutAct;
 
+
         QToolBar* tools;
         QActionGroup* toolGroup;
         QAction* penAct;
@@ -65,7 +70,7 @@ class MainWindow : public QMainWindow
         QAction* eclAct;
         QAction* chooseAct;
         QAction* lineAct;
-
+        QAction* getColorAct;
 
 };
 #endif

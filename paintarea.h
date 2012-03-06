@@ -7,8 +7,11 @@
 #include<QPushButton>
 #include<QColor>
 #include<QToolBar>
+#include<QColorDialog>
+#include<QString>
 
 #include<vector>
+
 #include<iostream>
 
 using namespace std;
@@ -17,6 +20,8 @@ void swap(int& x,int& y){
     x=y;
     y=temp;
 }
+
+//class ColorButton;
 
 
 class PaintArea: public QWidget
@@ -29,6 +34,7 @@ public:
         image=new QImage(width,height,QImage::Format_RGB32);
         image->fill(-1);
         painter=new QPainter(image);
+        resize(width,height);
 
     }
     void setState(int s){
@@ -38,6 +44,22 @@ public:
             copy=0;
         }
         state=s;
+    }
+    void setImage(QString name){
+
+        delete image;
+        image = new QImage;
+        image->load(name);
+        painter=new QPainter(image);
+    }
+    void saveImage(QString name){
+
+        bool g=image->save(name);
+        cerr<<g;
+    }
+
+    void setColorPick(ColorPick* colPick){
+        colorPick=colPick;
     }
 
     void paintEvent(QPaintEvent*){
@@ -108,6 +130,9 @@ public:
 
 
         }
+        else if(state==12){
+            colorPick->setColor(QColor(image->pixel(px,py)));
+        }
 
     }
     void mouseMoveEvent(QMouseEvent* event){
@@ -168,6 +193,7 @@ private:
     QImage* image;
     QPainter* painter;
     QImage* copy;
+    ColorPick* colorPick;
     int state;
     int px;
     int py;
@@ -237,39 +263,18 @@ private:
 
     }
 };
-class ColorPick:public QToolBar{
+
+class ColorButton:public QPushButton{
+    //Q_OBJECT
 public:
-    ColorPick(QPainter* ptr):color(0,0,0),painter(ptr){
+    ColorButton(QPainter* p,QColor col):painter(p),color(col){
 
     }
-
-    void paintEvent(QPaintEvent *event){
-
-        QPainter painter(this);
-
-        painter.fillRect(0,0,40,40,color);
-
-        for(int i=0;i<8;++i){
-            painter.fillRect(0,50+i*30,30,30,QColor(255*(i&1),255*(i&2)>>1,255*(i&4)>>2))  ;
-        }
-    }
-    void mousePressEvent(QMouseEvent* event){
-        int px=event->x();
-        int py=event->y();
-        //cerr<<px;
-        if(px<0||px>30||py<50||py>290)
-            return;
-        py-=50;
-        py/=30;
-
-        color.setRgb(255*(py&1),255*(py&2)>>1,255*(py&4)>>2);
+    void mousePressEvent(QMouseEvent *e){
         painter->setPen(color);
-        update();
-
     }
-    QColor color;
     QPainter* painter;
-
+    QColor color;
 };
 
 /*
