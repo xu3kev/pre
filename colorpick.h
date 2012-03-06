@@ -46,6 +46,10 @@ public:
         update();
         painter->setPen(color);
     }
+    void setPainter(QPainter* p){
+        painter=p;
+    }
+
     QColor color;
     QPainter* painter;
 

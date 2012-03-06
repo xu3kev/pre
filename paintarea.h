@@ -51,6 +51,7 @@ public:
         image = new QImage;
         image->load(name);
         painter=new QPainter(image);
+        colorPick->setPainter(painter);
     }
     void saveImage(QString name){
 
