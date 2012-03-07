@@ -45,21 +45,51 @@ public:
         }
         state=s;
     }
+    void initial(){
+        resize(width,height);
+        painter = new QPainter(image);
+        colorPick->setPainter(painter);
+
+    }
+
     void setImage(QString name){
 
         delete image;
         image = new QImage;
         image->load(name);
-        painter=new QPainter(image);
-        colorPick->setPainter(painter);
         width=image->width();
         height=image->height();
-        resize(width,height);
+      //  painter=new QPainter(image);
+      //  colorPick->setPainter(painter);
+      //  resize(width,height);
+        initial();
     }
     void saveImage(QString name){
 
         bool g=image->save(name);
         cerr<<g;
+    }
+    void resizeImage(int w,int h){
+        QImage* tmp=image;
+        image=new QImage(w,h,QImage::Format_RGB32);
+        width=w;
+        height=h;
+        initial();
+
+        //painter=new QPainter (image);
+        painter->drawImage(0,0,*tmp);
+        delete tmp;
+
+        //resize(width,height);
+    }
+    void newImage(int w,int h){
+        delete image;
+        image = new QImage(w,h,QImage::Format_RGB32);
+        //painter=new QPainter(image);
+        width=w;
+        height=h;
+        initial();
+
     }
 
     void setColorPick(ColorPick* colPick){
