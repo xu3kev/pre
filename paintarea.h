@@ -50,15 +50,18 @@ public:
     }
     int getWidth(){ return width; }
     int getHeight(){ return height; }
-    void initial(){
+    void initial(QPen pen,QBrush brush){
         resize(width,height);
         painter = new QPainter(image);
-        painter->setPen(colorPick->getColor());
+        painter->setPen(pen);
+        painter->setBrush(brush);
         colorPick->setPainter(painter);
 
     }
 
     void setImage(QString name){
+        QPen pen=painter->pen();
+        QBrush brush=painter->brush();
         delete painter;
         delete image;
         image = new QImage;
@@ -68,7 +71,8 @@ public:
       //  painter=new QPainter(image);
       //  colorPick->setPainter(painter);
       //  resize(width,height);
-        initial();
+        initial(pen,brush);
+
     }
     void saveImage(QString name){
 
@@ -76,13 +80,15 @@ public:
         cerr<<g;
     }
     void resizeImage(int w,int h){
+        QPen pen=painter->pen();
+        QBrush brush=painter->brush();
         delete painter;
         QImage* tmp=image;
         image=new QImage(w,h,QImage::Format_RGB32);
         update();
         width=w;
         height=h;
-        initial();
+        initial(pen,brush);
         image->fill(-1);
 
         //painter=new QPainter (image);
@@ -93,13 +99,15 @@ public:
         //resize(width,height);
     }
     void newImage(int w,int h){
+        QBrush brush=painter->brush();
+        QPen pen=painter->pen();
         delete painter;
         delete image;
         image = new QImage(w,h,QImage::Format_RGB32);
         //painter=new QPainter(image);
         width=w;
         height=h;
-        initial();
+        initial(pen,brush);
         image->fill(-1);
     }
 
@@ -286,6 +294,12 @@ private:
         int s=1;
         xs.push_back(x);
         ys.push_back(y);
+
+        QPen pen=painter->pen();
+        pen.setWidth(1);
+        painter->save();
+        painter->setPen(pen);
+
         painter->drawPoint(x,y);
         while(i<xs.size()){
             if(xs[i]>0 && image->pixel(xs[i]-1,ys[i])==pcol ){
@@ -313,8 +327,9 @@ private:
         }
 
         cout<<xs.size()<<" "<<ys.size()<<endl;
-
+        painter->restore();
     }
+
 };
 
 class ColorButton:public QPushButton{

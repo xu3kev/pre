@@ -7,7 +7,7 @@
 
 class ColorPick:public QToolBar{
 public:
-    ColorPick(QWidget* parent,QPainter* ptr):color(0,0,0),painter(ptr){
+    ColorPick(QWidget* parent,QPainter* ptr):color(0,0,0),color2(255,255,255),painter(ptr){
 
     }
 
@@ -16,7 +16,7 @@ public:
         QPainter painter(this);
 
         painter.fillRect(0,0,40,40,color);
-
+        painter.fillRect(45,5,30,30,color2);
         for(int i=0;i<8;++i){
             painter.fillRect(0,50+i*30,30,30,QColor(255*(i&1),255*(i&2)>>1,255*(i&4)>>2))  ;
         }
@@ -28,6 +28,12 @@ public:
         if(px>0&&px<40&&py>0&&py<40){
             color=QColorDialog::getColor();
             setPen(color);
+            update();
+            return;
+        }
+        if(px>45&&py>5&&px<75&&py<35){
+            color2=QColorDialog::getColor();
+            painter->setBrush(color2);
             update();
             return;
         }

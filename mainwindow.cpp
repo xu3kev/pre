@@ -88,7 +88,12 @@ void MainWindow::createTools(){
     toolGroup->addAction(lineAct);
     toolGroup->addAction(getColorAct);
     tools->addActions(toolGroup->actions());
-    QCheckBox* tmp = new QCheckBox ("i");
+    QCheckBox* tmp = new QCheckBox ;
+    //QPixmap* tmp4=new QPixmap(150,150);
+    //tmp4->fill(QColor(0,0,0));
+    //QIcon* tmp3=new QIcon(*tmp4);
+    //tmp->setIcon(*tmp3);
+
     connect(tmp,SIGNAL(clicked(bool)),this,SLOT(check(bool)));
     QSpinBox* tmp2=new QSpinBox;
     connect(tmp2,SIGNAL(valueChanged(int)),this,SLOT(pen(int)));
