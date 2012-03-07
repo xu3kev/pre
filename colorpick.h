@@ -27,7 +27,7 @@ public:
         //cerr<<px;
         if(px>0&&px<40&&py>0&&py<40){
             color=QColorDialog::getColor();
-            painter->setPen(color);
+            setPen(color);
             update();
             return;
         }
@@ -37,22 +37,29 @@ public:
         py/=30;
 
         color.setRgb(255*(py&1),255*(py&2)>>1,255*(py&4)>>2);
-        painter->setPen(color);
+        setPen(color);
         update();
 
     }
     void setColor(QColor col){
         color=col;
         update();
-        painter->setPen(color);
+        setPen(color);
     }
     void setPainter(QPainter* p){
         painter=p;
     }
     QColor getColor(){ return color; }
+    QColor getColor2(){return color2; }
     QColor color;
+    QColor color2;
     QPainter* painter;
+    void setPen(QColor color){
+        QPen tmp=painter->pen();
+        tmp.setColor(color);
+        painter->setPen(tmp);
 
+    }
 };
 
 #endif // COLORPICK_H

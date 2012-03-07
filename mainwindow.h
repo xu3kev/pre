@@ -37,6 +37,7 @@ class MainWindow : public QMainWindow
         void getColor();
         void check(bool g);
         void resizeImage();
+        void pen(int);
 
 	private:
 		void createMenus();

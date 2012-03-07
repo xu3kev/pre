@@ -27,7 +27,7 @@ void swap(int& x,int& y){
 class PaintArea: public QWidget
 {
 public:
-    PaintArea(QObject* parent=0):width(800),height(500),copy(0)
+    PaintArea(QObject* parent=0):width(800),height(500),copy(0),check(0)
     {
         state=0;
         tmpPaint=0;
@@ -111,9 +111,13 @@ public:
         QPainter painter2(this);
         painter2.setPen(painter->pen());
         painter2.drawImage(0,0,*image);
+        painter2.setBrush(painter->brush());
 
         if(state==4){
+
+
             painter2.drawRect(px,py,px2-px,py2-py);
+
         }
         else if(state==6){
             painter2.drawEllipse(px,py,px2-px,py2-py);
@@ -260,7 +264,9 @@ private:
     }
 
     void rec(int x,int y,int xx,int yy){
+
         painter->drawRect(x,y,xx-x,yy-y);
+
         update();
     }
     void ecl(int x,int y,int xx,int yy){
@@ -318,7 +324,9 @@ public:
 
     }
     void mousePressEvent(QMouseEvent *e){
-        painter->setPen(color);
+        QPen tmp = painter->pen();
+        tmp.setColor(color);
+        painter->setPen(tmp);
     }
     QPainter* painter;
     QColor color;

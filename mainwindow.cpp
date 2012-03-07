@@ -88,9 +88,14 @@ void MainWindow::createTools(){
     toolGroup->addAction(lineAct);
     toolGroup->addAction(getColorAct);
     tools->addActions(toolGroup->actions());
-    QCheckBox* tmp = new QCheckBox ("il");
+    QCheckBox* tmp = new QCheckBox ("i");
     connect(tmp,SIGNAL(clicked(bool)),this,SLOT(check(bool)));
+    QSpinBox* tmp2=new QSpinBox;
+    connect(tmp2,SIGNAL(valueChanged(int)),this,SLOT(pen(int)));
+    tmp2->setValue(1);
+    tmp2->setMinimum(1);
     tools->addWidget(tmp);
+    tools->addWidget(tmp2);
 
 }
 
@@ -232,8 +237,20 @@ void MainWindow::getColor(){
 }
 void MainWindow::check(bool g){
     paintArea->setCheck(g);
+    if(g){
+        paintArea->getPainter()->setBrush(colorPick->getColor2());
+    }
+    else{
+        paintArea->getPainter()->setBrush(Qt::NoBrush);
+    }
 }
 void MainWindow::resizeImage(){
     paintArea->resizeImage(QInputDialog::getInt(this,"New","width",paintArea->getWidth()),
                            QInputDialog::getInt(this,"New","height",paintArea->getHeight()));
+}
+void MainWindow::pen(int x){
+    cerr<<x;
+    QPen tmp=paintArea->getPainter()->pen();
+    tmp.setWidth(x);
+    paintArea->getPainter()->setPen(tmp);
 }
