@@ -132,15 +132,20 @@ public:
         }
         else if(state==8){
             QPainter painter3(this);
+            painter3.setPen(Qt::DashDotDotLine);
             painter3.drawRect(px,py,px2-px,py2-py);
         }
         else if(state==7&&copy){
             QPainter painter3(this);
+            painter3.setPen(Qt::DashDotDotLine);
             painter3.drawImage(cpx,cpy,*copy);
+            painter3.drawRect(cpx,cpy,copy->width(),copy->height());
         }
         else if(state==9){
             QPainter painter3(this);
+            painter3.setPen(Qt::DashDotDotLine);
             painter3.drawImage(QPoint(cpx+px2-px,cpy+py2-py),*copy);
+            painter3.drawRect(cpx+px2-px,cpy+py2-py,copy->width(),copy->height());
         }
         else if(state==11){
             painter2.drawLine(px,py,px2,py2);
