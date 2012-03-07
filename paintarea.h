@@ -45,15 +45,21 @@ public:
         }
         state=s;
     }
+    void setCheck(bool g){
+        check=g;
+    }
+    int getWidth(){ return width; }
+    int getHeight(){ return height; }
     void initial(){
         resize(width,height);
         painter = new QPainter(image);
+        painter->setPen(colorPick->getColor());
         colorPick->setPainter(painter);
 
     }
 
     void setImage(QString name){
-
+        delete painter;
         delete image;
         image = new QImage;
         image->load(name);
@@ -70,26 +76,31 @@ public:
         cerr<<g;
     }
     void resizeImage(int w,int h){
+        delete painter;
         QImage* tmp=image;
         image=new QImage(w,h,QImage::Format_RGB32);
+        update();
         width=w;
         height=h;
         initial();
+        image->fill(-1);
 
         //painter=new QPainter (image);
-        painter->drawImage(0,0,*tmp);
+        //painter->drawImage(0,0,*tmp);
+        update();
         delete tmp;
 
         //resize(width,height);
     }
     void newImage(int w,int h){
+        delete painter;
         delete image;
         image = new QImage(w,h,QImage::Format_RGB32);
         //painter=new QPainter(image);
         width=w;
         height=h;
         initial();
-
+        image->fill(-1);
     }
 
     void setColorPick(ColorPick* colPick){
@@ -229,6 +240,7 @@ private:
     QImage* copy;
     QImage* copy2;
     ColorPick* colorPick;
+    bool check;
     int state;
     int px;
     int py;

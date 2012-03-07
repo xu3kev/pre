@@ -88,7 +88,9 @@ void MainWindow::createTools(){
     toolGroup->addAction(lineAct);
     toolGroup->addAction(getColorAct);
     tools->addActions(toolGroup->actions());
-
+    QCheckBox* tmp = new QCheckBox ("il");
+    connect(tmp,SIGNAL(clicked(bool)),this,SLOT(check(bool)));
+    tools->addWidget(tmp);
 
 }
 
@@ -113,6 +115,7 @@ void MainWindow::createMenus()
     editMenu->addAction(cutAct);
     editMenu->addAction(undoAct);
     editMenu->addAction(redoAct);
+    editMenu->addAction(resizeAct);
 
     helpMenu = menuBar()->addMenu("Help");
     helpMenu->addAction(aboutAct);
@@ -160,12 +163,17 @@ void MainWindow::createActions()
     redoAct->setStatusTip("Redo");
     connect(redoAct,SIGNAL(triggered()),this,SLOT(redo()));
 
+    resizeAct = new QAction("resize",this);
+    connect(resizeAct,SIGNAL(triggered()),this,SLOT(resizeImage()));
+
     aboutAct = new QAction("About",this);
     aboutAct->setStatusTip("Show about box");
     connect(aboutAct,SIGNAL(triggered()),this,SLOT(about()));
 
 }
 void MainWindow::newFile(){
+    paintArea->newImage(QInputDialog::getInt(this,"New","width",800),
+                        QInputDialog::getInt(this,"New","height",500));
 
 }
 void MainWindow::open(){
@@ -221,4 +229,11 @@ void MainWindow::line(){
 }
 void MainWindow::getColor(){
     paintArea->setState(12);
+}
+void MainWindow::check(bool g){
+    paintArea->setCheck(g);
+}
+void MainWindow::resizeImage(){
+    paintArea->resizeImage(QInputDialog::getInt(this,"New","width",paintArea->getWidth()),
+                           QInputDialog::getInt(this,"New","height",paintArea->getHeight()));
 }

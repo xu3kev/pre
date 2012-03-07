@@ -49,7 +49,7 @@ public:
     void setPainter(QPainter* p){
         painter=p;
     }
-
+    QColor getColor(){ return color; }
     QColor color;
     QPainter* painter;
 

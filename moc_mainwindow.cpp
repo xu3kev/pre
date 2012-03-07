@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Tue Mar 6 22:18:45 2012
+** Created: Wed Mar 7 21:36:05 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      16,   14, // methods
+      18,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -47,6 +47,8 @@ static const uint qt_meta_data_MainWindow[] = {
      105,   11,   11,   11, 0x08,
      114,   11,   11,   11, 0x08,
      121,   11,   11,   11, 0x08,
+     134,  132,   11,   11, 0x08,
+     146,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -55,7 +57,8 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0newFile()\0open()\0save()\0"
     "copy()\0paste()\0cut()\0undo()\0redo()\0"
     "about()\0pen()\0rec()\0paint()\0ecl()\0"
-    "choose()\0line()\0getColor()\0"
+    "choose()\0line()\0getColor()\0g\0check(bool)\0"
+    "resizeImage()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -103,9 +106,11 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 13: choose(); break;
         case 14: line(); break;
         case 15: getColor(); break;
+        case 16: check((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 17: resizeImage(); break;
         default: ;
         }
-        _id -= 16;
+        _id -= 18;
     }
     return _id;
 }

@@ -35,6 +35,8 @@ class MainWindow : public QMainWindow
         void choose();
         void line();
         void getColor();
+        void check(bool g);
+        void resizeImage();
 
 	private:
 		void createMenus();
@@ -60,6 +62,7 @@ class MainWindow : public QMainWindow
         QAction* redoAct;
         QAction* undoAct;
         QAction* aboutAct;
+        QAction* resizeAct;
 
 
         QToolBar* tools;
