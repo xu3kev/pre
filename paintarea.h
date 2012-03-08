@@ -127,12 +127,17 @@ public:
         painter2.setBrush(painter->brush());
 
         if(state==4){
-
+            if(!check){
+                painter->setBrush(Qt::NoBrush);
+            }
 
             painter2.drawRect(px,py,px2-px,py2-py);
 
         }
         else if(state==6){
+            if(!check){
+                painter->setBrush(Qt::NoBrush);
+            }
             painter2.drawEllipse(px,py,px2-px,py2-py);
         }
         else if(state==8){
