@@ -33,7 +33,7 @@ public:
         }
         if(px>45&&py>5&&px<75&&py<35){
             color2=QColorDialog::getColor();
-            painter->setBrush(color2);
+            //painter->setBrush(color2);
             update();
             return;
         }

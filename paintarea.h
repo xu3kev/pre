@@ -27,7 +27,7 @@ void swap(int& x,int& y){
 class PaintArea: public QWidget
 {
 public:
-    PaintArea(QObject* parent=0):width(800),height(500),copy(0),check(0),copy2(0)
+    PaintArea(QObject* parent=0):width(800),height(500),copy(0),check(0),copy2(0),snapI(false)
     {
         state=0;
         tmpPaint=0;
@@ -74,7 +74,8 @@ public:
       //  colorPick->setPainter(painter);
       //  resize(width,height);
         initial(pen,brush);
-
+        snapI=0;
+        snapV=0;
     }
     void saveImage(QString name){
 
@@ -111,6 +112,8 @@ public:
         height=h;
         initial(pen,brush);
         image->fill(-1);
+        snapI=0;
+        snapV=0;
     }
 
     void setColorPick(ColorPick* colPick){
@@ -159,7 +162,16 @@ public:
         py=event->y();
         px2=px;
         py2=py;
-
+        if(snapI<10){
+        snap[snapI]=image->copy();
+        ++snapI;
+        snapV=snapI;
+        }
+        else{
+            for(int i=0;i<9;++i)
+                snap[i]=snap[i+1];
+            snap[snapI-1]=image->copy();
+        }
         if(state==0){
             draw(px,py);
             state=1;
@@ -184,12 +196,14 @@ public:
                     delete copy;
                     copy=0;
                     update();
+                    checkClean=false;
                 }
             }
             else{
                 cpx=px;
                 cpy=py;
                 ++state;
+                checkClean=false;
             }
 
 
@@ -238,6 +252,7 @@ public:
             copy=new QImage(image->copy(px,py,px2-px+1,py2-py+1) );
             //cerr<<"??";
             painter->fillRect(px,py,px2-px,py2-py,QColor(255,255,255));
+            checkClean=true;
             --state;
         }
         else if(state==9){
@@ -263,7 +278,8 @@ public:
         if(state==7&&copy){
             delete copy2;
             copy2=new QImage(*copy);
-            painter->fillRect(cpx,cpy,copy->width(),copy->height(),QColor(255,255,255));
+            if(!checkClean)
+                painter->fillRect(cpx,cpy,copy->width(),copy->height(),QColor(255,255,255));
             copy=0;
             update();
         }
@@ -279,6 +295,7 @@ public:
         delete copy;
         copy=new QImage(*copy2);
         //copy=0;
+        checkClean=true;
         state=7;
         //painter->drawImage(0,0,*copy2);
         update();
@@ -287,6 +304,27 @@ public:
     int getState(){
         return state;
     }
+    void undo(){
+        cerr<<snapI;
+        if(snapI){
+            snap[snapI]=image->copy();
+            --snapI;
+
+            //image->fill(0);
+            painter->drawImage(0,0,snap[snapI]);
+            //*image=snap[snapI];
+            //resize(snap[snapI].width(),snap[snapI].height());
+            update();
+        }
+    }
+    void redo(){
+        if(snapI<snapV){
+            ++snapI;
+            painter->drawImage(0,0,snap[snapI]);
+            //resize(snap[snapI].width(),snap[snapI].height());
+            update();
+        }
+    }
 
 private:
     QImage* image;
@@ -294,6 +332,7 @@ private:
     QImage* copy;
     QImage* copy2;
     ColorPick* colorPick;
+    bool checkClean;
     bool check;
     int state;
     int px;
@@ -307,7 +346,9 @@ private:
     int cpy;
     int cpx2;
     int cpy2;
-
+    QImage snap[15];
+    int snapI;
+    int snapV;
     void draw(int x,int y){
         painter->drawLine(x,y,px,py);
         update();

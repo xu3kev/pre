@@ -214,13 +214,13 @@ void MainWindow::cut(){
 paintArea->cut();
 }
 void MainWindow::undo(){
-
+    paintArea->undo();
 }
 void MainWindow::redo(){
-
+    paintArea->redo();
 }
 void MainWindow::about(){
-
+    QMessageBox::about(this,"About","paint");
 }
 void MainWindow::pen(){
     paintArea->setState(0);
