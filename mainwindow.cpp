@@ -41,6 +41,7 @@ MainWindow::MainWindow()
     statusBar();
 
     resize(1000,600);
+    penAct->setChecked(true);
 }
 void MainWindow::createTools(){
 
@@ -121,7 +122,7 @@ void MainWindow::createMenus()
 
 	editMenu = menuBar()->addMenu("Edit");
     editMenu->addAction(copyAct);
-    editMenu->addAction(copyAct);
+    editMenu->addAction(pasteAct);
     editMenu->addAction(cutAct);
     editMenu->addAction(undoAct);
     editMenu->addAction(redoAct);
@@ -202,13 +203,15 @@ void MainWindow::save(){
     }
 }
 void MainWindow::copy(){
-
+paintArea->copyImage();
 }
 void MainWindow::paste(){
-
+if(paintArea->paste()){
+    chooseAct->setChecked(true);
+}
 }
 void MainWindow::cut(){
-
+paintArea->cut();
 }
 void MainWindow::undo(){
 

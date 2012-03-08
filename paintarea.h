@@ -27,7 +27,7 @@ void swap(int& x,int& y){
 class PaintArea: public QWidget
 {
 public:
-    PaintArea(QObject* parent=0):width(800),height(500),copy(0),check(0)
+    PaintArea(QObject* parent=0):width(800),height(500),copy(0),check(0),copy2(0)
     {
         state=0;
         tmpPaint=0;
@@ -38,10 +38,12 @@ public:
 
     }
     void setState(int s){
+
         if(state==7&&copy){
             painter->drawImage(cpx,cpy,*copy);
             delete copy;
             copy=0;
+            update();
         }
         state=s;
     }
@@ -92,7 +94,7 @@ public:
         image->fill(-1);
 
         //painter=new QPainter (image);
-        //painter->drawImage(0,0,*tmp);
+        painter->drawImage(0,0,*tmp);
         update();
         delete tmp;
 
@@ -181,7 +183,7 @@ public:
                     ++state;
                     delete copy;
                     copy=0;
-
+                    update();
                 }
             }
             else{
@@ -251,6 +253,41 @@ public:
 
     }
     QPainter* getPainter(){return painter;}
+    void copyImage(){
+        if(state==7&&copy){
+            delete copy2;
+            copy2=new QImage (*copy);
+        }
+    }
+    void cut(){
+        if(state==7&&copy){
+            delete copy2;
+            copy2=new QImage(*copy);
+            painter->fillRect(cpx,cpy,copy->width(),copy->height(),QColor(255,255,255));
+            copy=0;
+            update();
+        }
+    }
+    bool paste(){
+        if(!copy2)
+            return false;
+        if(state==7&&copy){
+            painter->drawImage(cpx,cpy,*copy);
+        }
+        cpx=0;
+        cpy=0;
+        delete copy;
+        copy=new QImage(*copy2);
+        //copy=0;
+        state=7;
+        //painter->drawImage(0,0,*copy2);
+        update();
+        return true;
+    }
+    int getState(){
+        return state;
+    }
+
 private:
     QImage* image;
     QPainter* painter;
