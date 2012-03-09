@@ -38,8 +38,12 @@ class MainWindow : public QMainWindow
         void check(bool g);
         void resizeImage();
         void pen(int);
+        void zoomIn();
+        void zoomOut();
 
 	private:
+        int x;
+
 		void createMenus();
         void createActions();
         void createTools();
@@ -64,7 +68,8 @@ class MainWindow : public QMainWindow
         QAction* undoAct;
         QAction* aboutAct;
         QAction* resizeAct;
-
+        QAction* zoomInAct;
+        QAction* zoomOutAct;
 
         QToolBar* tools;
         QActionGroup* toolGroup;

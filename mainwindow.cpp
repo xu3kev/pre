@@ -5,7 +5,7 @@
 MainWindow::MainWindow()
 {
     //QWidget* widget = new QWidget;
-
+    x=1;
     paintArea=new PaintArea;
     scrollArea=new QScrollArea;
     scrollArea->setWidget(paintArea);
@@ -127,6 +127,8 @@ void MainWindow::createMenus()
     editMenu->addAction(undoAct);
     editMenu->addAction(redoAct);
     editMenu->addAction(resizeAct);
+    editMenu->addAction(zoomInAct);
+    editMenu->addAction(zoomOutAct);
 
     helpMenu = menuBar()->addMenu("Help");
     helpMenu->addAction(aboutAct);
@@ -166,13 +168,24 @@ void MainWindow::createActions()
     undoAct = new QAction("Undo",this);
     undoAct->setShortcut(QKeySequence::Undo);
     undoAct->setStatusTip("Undo");
-
     connect(undoAct,SIGNAL(triggered()),this,SLOT(undo()));
 
     redoAct = new QAction("Redo",this);
     redoAct->setShortcut(QKeySequence::Redo);
     redoAct->setStatusTip("Redo");
     connect(redoAct,SIGNAL(triggered()),this,SLOT(redo()));
+
+    zoomInAct = new QAction("ZoomIn",this);
+    zoomInAct->setShortcut(QKeySequence::ZoomIn);
+    zoomInAct->setStatusTip("ZoomIn");
+    connect(zoomInAct,SIGNAL(triggered()),this,SLOT(zoomIn()));
+
+
+    zoomOutAct = new QAction("ZoomOut",this);
+    zoomOutAct->setShortcut(QKeySequence::ZoomOut);
+    zoomOutAct->setStatusTip("ZoomOut");
+    connect(zoomOutAct,SIGNAL(triggered()),this,SLOT(zoomOut()));
+
 
     resizeAct = new QAction("resize",this);
     connect(resizeAct,SIGNAL(triggered()),this,SLOT(resizeImage()));
@@ -261,4 +274,16 @@ void MainWindow::pen(int x){
     QPen tmp=paintArea->getPainter()->pen();
     tmp.setWidth(x);
     paintArea->getPainter()->setPen(tmp);
+}
+void MainWindow::zoomIn(){
+
+    x*=2;
+paintArea->getPainter()->scale(x,x);
+
+}
+void MainWindow::zoomOut(){
+    if(x==1)
+        return;
+    x/=2;
+paintArea->getPainter()->scale(x,x);
 }
