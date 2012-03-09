@@ -1,3 +1,6 @@
+程式語言：C++ with Qt library
+OS：ubuntu 10.10
+
 左側工具列功能：
 畫筆
 畫矩型(填滿，無填滿)
